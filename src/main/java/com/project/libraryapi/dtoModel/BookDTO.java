@@ -1,5 +1,12 @@
 package com.project.libraryapi.dtoModel;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class BookDTO {
    
 	private Long id;
@@ -7,6 +14,7 @@ public class BookDTO {
 	private String author;
 	private String isbn;
 	
+
 	public Long getId() {
 		return id;
 	}
