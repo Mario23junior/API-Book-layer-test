@@ -17,7 +17,10 @@ public class BookController {
 	public BookDTO create() {
 		
 		BookDTO dto = new BookDTO();
-		
-		return null;
+		dto.setId((long) 11);
+		dto.setAuthor("Author");
+		dto.setTitle("meu livro");
+		dto.setIsbn("129949323");
+		return dto;
 	}
 }

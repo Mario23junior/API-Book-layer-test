@@ -41,14 +41,14 @@ public class BookControllerTest {
 		           .post(BOOK_KEY)
 		           .contentType(MediaType.APPLICATION_JSON)
 		           .accept(MediaType.APPLICATION_JSON)
-		           .content("");
+		           .content(json);
 		
 		mvc
 		.perform(requestFake)
 		.andExpect(MockMvcResultMatchers.status().isCreated())
 		.andExpect(MockMvcResultMatchers.jsonPath(json, "id").isNotEmpty())
-		.andExpect(jsonPath("titulo").value("menu livro teste"))
-	    .andExpect(jsonPath("author").value("author test"))
+		.andExpect(jsonPath("title").value("meu livro"))
+	    .andExpect(jsonPath("author").value("Author"))
 	    .andExpect(jsonPath("isbn").value("129949323"));
 	
 	}
