@@ -1,5 +1,7 @@
 package com.project.libraryapi.dtoModel;
 
+import javax.validation.constraints.NotEmpty;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
@@ -10,8 +12,14 @@ import lombok.NoArgsConstructor;
 public class BookDTO {
    
 	private long id;
+	
+	@NotEmpty
 	private String title;
+	
+	@NotEmpty
 	private String author;
+	
+	@NotEmpty
 	private String isbn;
 	
 
