@@ -8,4 +8,6 @@ import com.project.libraryapi.Model.Book;
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long> {
 
+	boolean existsByIsbn(String isbn);
+
 }
