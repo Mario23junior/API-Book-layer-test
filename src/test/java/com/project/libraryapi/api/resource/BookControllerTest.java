@@ -23,9 +23,11 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.project.libraryapi.Exception.BusinessException;
 import com.project.libraryapi.Model.Book;
 import com.project.libraryapi.Service.BookService;
 import com.project.libraryapi.dtoModel.BookDTO;
+
 
 @WebMvcTest
 @AutoConfigureMockMvc
@@ -44,7 +46,8 @@ public class BookControllerTest {
 	@Test
 	@DisplayName("Metodo para salvar livros no banco")
 	public void createBookTest() throws Exception {
-		BookDTO dto = BookDTO.builder().author("Arthur").title("harry ventuy").isbn("23112").build();
+		
+		BookDTO dto = createNewBook();
 		Book saveBook = Book.builder().id(101).author("Arthur").title("harry ventuy").isbn("23112").build();
 
 		BDDMockito.given(service.save(Mockito.any(Book.class))).willReturn(saveBook);
@@ -64,7 +67,6 @@ public class BookControllerTest {
 		.andExpect(jsonPath("title").value(dto.getTitle()))
 	    .andExpect(jsonPath("author").value(dto.getAuthor()))
 	    .andExpect(jsonPath("isbn").value(dto.getIsbn()));
-	
 	}
 	
 	@Test
@@ -82,6 +84,34 @@ public class BookControllerTest {
 		mvc.perform(request)
 		        .andExpect(status().isBadRequest())
 		        .andExpect(jsonPath("errors",Matchers.hasSize(3)));
+	}
+	
+	@Test
+	@DisplayName("Deve lançar erro ao tentar cadastrar um livro com isbn ja cadastrado")
+	public void createBookWithDUplicateIsbn() throws Exception {
+
+	 	BookDTO dto = createNewBook();
+		String json = new ObjectMapper().writeValueAsString(dto);
+		String mensagemErro = "isbn ja cadastrado";
+		BDDMockito.given(service.save(Mockito.any(Book.class)))
+		                .willThrow(new BusinessException(mensagemErro));
+		
+		MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+		           .post(BOOK_KEY)
+		           .contentType(MediaType.APPLICATION_JSON)
+		           .accept(MediaType.APPLICATION_JSON)
+		           .content(json);
+		
+		mvc.perform(request)
+		           .andExpect(status().isBadRequest())
+		           .andExpect(jsonPath("errors",Matchers.hasSize(1) ))
+		           .andExpect(jsonPath("errors[0]").value(mensagemErro));
+		           
+	}
+	
+	
+	public BookDTO createNewBook() {
+	   return BookDTO.builder().author("Arthur").title("harry ventuy").isbn("23112").build();
 	}
 }
 
