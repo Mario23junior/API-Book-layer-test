@@ -11,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import com.project.libraryapi.Model.Book;
 import com.project.libraryapi.service.repository.BookRepository;
 
 @ExtendWith(SpringExtension.class)
@@ -30,6 +31,8 @@ public class BookRepositoryTest {
 	 
 		// cenario
 		  String isbn = "1234";
+		  Book book = Book.builder().title("Gravit falls").author("dipper").isbn(isbn).build();
+		  entityManager.persist(book);
 		
 		// execucao
 		 boolean exist = repository.existsByIsbn(isbn);
