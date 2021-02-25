@@ -1,5 +1,7 @@
 package com.project.libraryapi.service.impl;
 
+import java.util.Optional;
+
 import com.project.libraryapi.Exception.BusinessException;
 import com.project.libraryapi.Model.Book;
 import com.project.libraryapi.Service.BookService;
@@ -19,6 +21,11 @@ public class BookServiceImpl implements BookService {
 			throw new BusinessException("Isbn já cadastrado");
 		}
 	    return repository.save(book);
+	}
+
+	@Override
+	public Optional<Book> getById(Long id) {
+		return Optional.empty();
 	}
 
 }
