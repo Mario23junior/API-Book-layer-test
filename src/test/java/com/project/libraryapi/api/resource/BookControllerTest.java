@@ -144,7 +144,23 @@ public class BookControllerTest {
 		
 	}
 	
-	public BookDTO createNewBook() {
+	@Test
+	@DisplayName("Deve retornar not found quando o livro não existir  no banco de dados ")
+	public void bookNotFoundTest() throws Exception{
+		
+		// cenario
+		BDDMockito.given(service.getById(Mockito.anyLong()) ).willReturn(Optional.empty());
+
+		//execucao
+				MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+				                .get(BOOK_KEY.concat("/" + 1))
+				                .accept(MediaType.APPLICATION_JSON);
+				mvc.perform(request)
+				       .andExpect(status().isNotFound());
+				
+	}
+	
+	private BookDTO createNewBook() {
 	   return BookDTO.builder().author("Arthur").title("harry ventuy").isbn("23112").build();
 	}
 	
